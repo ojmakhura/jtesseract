@@ -1,0 +1,28 @@
+cmake_minimum_required(VERSION 2.8.6)
+project (jtesseract)
+
+set (JTESSERACT_MAJOR_VERSION 1)
+set (JTESSERACT_MINOR_VERSION 0)
+set (JTESSERACT_PATCH_VERSION 1)
+set (JTESSERACT_VERSION ${JTESSERACT_MAJOR_VERSION}.${JTESSERACT_MINOR_VERSION}.${JTESSERACT_PATCH_VERSION})
+
+find_package(JNI REQUIRED)
+find_package(Java REQUIRED)
+include(UseJava)
+set(CMAKE_JNI_TARGET TRUE)
+
+#find OpenCV
+find_package( OpenCV REQUIRED )
+
+file(GLOB JAVA_SOURCE_FILES "src/main/java/jtesseract/*.java")
+
+set(LIB_VERSION ${JTESSERACT_MAJOR_VERSION}${JTESSERACT_MINOR_VERSION}${JTESSERACT_PATCH_VERSION})
+add_jar(jtesseract-${LIB_VERSION} ${JAVA_SOURCE_FILES})
+
+file(GLOB JTESSERACT_JNI_SRC "src/main/native/*.cpp")
+
+add_library(${PROJECT_NAME} SHARED ${JTESSERACT_JNI_SRC} )
+target_link_libraries(${PROJECT_NAME} LINK_PUBLIC ${OpenCV_LIBS})
+include_directories(${JNI_INCLUDE_DIRS})
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g3 -Wall -fmessage-length=0 -fPIC -O3 -std=c++11 -lc -shared")
+SET_TARGET_PROPERTIES(${PROJECT_NAME} PROPERTIES LINKER_LANGUAGE CXX)
