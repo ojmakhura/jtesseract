@@ -73,7 +73,7 @@
 						<source>
 							<directory>src/main/native</directory>
 							<fileNames>
-								<fileName>JTesseract.cpp</fileName>
+								<fileName>JTessBaseAPI.cpp</fileName>
 							</fileNames>
 						</source>
 						<source>

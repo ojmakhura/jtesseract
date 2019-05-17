@@ -1,36 +1,20 @@
-package jtesseract;
+package jtesseract.tests;
 
-import jtesseract.JTesseract;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import static org.junit.Assert.assertTrue;
 
-public class JTesseractTest extends TestCase
+import org.junit.Test;
+
+import jtesseract.JTessBaseAPI;
+
+public class JTessBaseAPITest
 {
-	/**
-     * Create the test case
-     *
-     * @param testName name of the test case
-     */
-	public JTesseractTest(String testName)
-	{
-		super(testName);
-	}
-
-	/**
-     * @return the suite of tests being tested
-     */
-	public static Test suite()
-	{
-		return new TestSuite(JTesseractTest.class);
-	}
-
 	/**
 	 * Test creation of a a new JTesseract object
 	 */
+	@Test
 	public void testCreate()
 	{
-		//JTesseract tess = new JTesseract();
-		assertTrue(true);
+		//JTessBaseAPI tess = new JTessBaseAPI();
+		assertTrue(tess != null);
 	}
 }
