@@ -1,3 +1,29 @@
+/*
+ * JTesseract.cpp
+ *
+ * Copyright 2019 Onalenna Junior Makhura
+ *
+ * Permission is hereby granted, free of charge, to any person
+ * obtaining a copy of this software and associated documentation files
+ * (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge,
+ * publish, distribute, sublicense, and/or sell copies of the Software,
+ * and to permit persons to whom the Software is furnished to do so,
+ * subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT.  IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+ * BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+ * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 #include "jtesseract_JTesseract.h"
 
 #include <string>
@@ -5,6 +31,7 @@
 #include <leptonica/allheaders.h>
 #include <opencv2/opencv.hpp>
 #include <clocale>
+#include <stdio.h>
 
 using namespace cv;
 using namespace tesseract;
@@ -162,3 +189,196 @@ JNIEXPORT void JNICALL Java_jtesseract_JTesseract_setFromBufferedImage
 	ocr->SetImage(params.image.data, params.image.cols, params.image.rows, 3, params.image.step);
 	
 }
+
+/*
+ * Class:     jtesseract_JTesseract
+ * Method:    catchSignals
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_jtesseract_JTesseract_catchSignals(JNIEnv *env, jclass type)
+{
+	ocr->CatchSignals();
+}
+
+/*
+ * Class:     jtesseract_JTesseract
+ * Method:    setInputName
+ * Signature: (Ljava/lang/String;)V
+ */
+JNIEXPORT void JNICALL Java_jtesseract_JTesseract_setInputName(JNIEnv *env, jobject obj, jstring name)
+{
+	ocr->SetInputName(env->GetStringUTFChars(name, 0));
+}
+
+
+/*
+ * Class:     jtesseract_JTesseract
+ * Method:    getInputName
+ * Signature: ()Ljava/lang/String;
+ */
+JNIEXPORT jstring JNICALL Java_jtesseract_JTesseract_getInputName (JNIEnv *env, jobject obj)
+{
+	String name(ocr->GetInputName());
+	return env->NewStringUTF(name.c_str());
+}
+
+/*
+ * Class:     jtesseract_JTesseract
+ * Method:    getSourceYResolution
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_jtesseract_JTesseract_getSourceYResolution(JNIEnv *env, jobject obj)
+{
+	jint res = ocr->GetSourceYResolution();
+
+	return res;
+}
+
+/*
+ * Class:     jtesseract_JTesseract
+ * Method:    getDatapath
+ * Signature: ()Ljava/lang/String;
+ */
+JNIEXPORT jstring JNICALL Java_jtesseract_JTesseract_getDatapath(JNIEnv *env, jobject obj)
+{
+	return env->NewStringUTF(ocr->GetDatapath());
+}
+
+/*
+ * Class:     jtesseract_JTesseract
+ * Method:    setOutputName
+ * Signature: (Ljava/lang/String;)V
+ */
+JNIEXPORT void JNICALL Java_jtesseract_JTesseract_setOutputName(JNIEnv *env, jobject obj, jstring name)
+{
+	ocr->SetOutputName(env->GetStringUTFChars(name, 0));
+}
+
+/*
+ * Class:     jtesseract_JTesseract
+ * Method:    setVariable
+ * Signature: (Ljava/lang/String;Ljava/lang/String;)Z
+ */
+JNIEXPORT jboolean JNICALL Java_jtesseract_JTesseract_setVariable(JNIEnv *env, jobject obj, jstring name, jstring value)
+{
+	if(ocr->SetVariable(env->GetStringUTFChars(name, 0), env->GetStringUTFChars(value, 0)))
+	{
+		return true;
+	} else {
+		return false;
+	}
+}
+
+
+/*
+ * Class:     jtesseract_JTesseract
+ * Method:    setDebugVariable
+ * Signature: (Ljava/lang/String;Ljava/lang/String;)Z
+ */
+JNIEXPORT jboolean JNICALL Java_jtesseract_JTesseract_setDebugVariable(JNIEnv *env, jobject obj, jstring name, jstring value)
+{
+	if(ocr->SetDebugVariable(env->GetStringUTFChars(name, 0), env->GetStringUTFChars(value, 0)))
+	{
+		return true;
+	} 
+	
+	return false;
+}
+
+/**
+ * This method uses the jtesseract.J
+ * 
+ * Class:     jtesseract_JTesseract
+ * Method:    getIntVariable
+ * Signature: (Ljava/lang/String;Ljtesseract/JTessInt;)Z
+ */
+JNIEXPORT jboolean JNICALL Java_jtesseract_JTesseract_getIntVariable(JNIEnv *env, jobject object, jstring name, jobject value)
+{
+	int result;
+	
+	if(ocr->GetIntVariable(env->GetStringUTFChars(name, 0), &result))
+	{
+		jclass v_class = env->GetObjectClass(value);
+		jmethodID setValue = env->GetMethodID(v_class, "setValue", "(I)V");
+		env->CallVoidMethod(v_class, setValue, result);
+		return true;
+	}
+
+	return false;
+}
+
+/*
+ * Class:     jtesseract_JTesseract
+ * Method:    getBoolVariable
+ * Signature: (Ljava/lang/String;Ljtesseract/JTessBoolean;)Z
+ */
+JNIEXPORT jboolean JNICALL Java_jtesseract_JTesseract_getBoolVariable(JNIEnv *env, jobject onj, jstring name, jobject value)
+{
+	bool result;
+	
+	if(ocr->GetBoolVariable(env->GetStringUTFChars(name, 0), &result))
+	{
+		jclass v_class = env->GetObjectClass(value);
+		jmethodID setValue = env->GetMethodID(v_class, "setValue", "(Z)V");
+		env->CallVoidMethod(v_class, setValue, result);
+		return true;
+	}
+
+	return false;
+}
+
+/*
+ * Class:     jtesseract_JTesseract
+ * Method:    getDoubleVariable
+ * Signature: (Ljava/lang/String;Ljava/lang/Double;)Z
+ */
+JNIEXPORT jboolean JNICALL Java_jtesseract_JTesseract_getDoubleVariable(JNIEnv *env, jobject obj, jstring name, jobject value)
+{
+	double result;
+	
+	if(ocr->GetDoubleVariable(env->GetStringUTFChars(name, 0), &result))
+	{
+		jclass v_class = env->GetObjectClass(value);
+		jmethodID setValue = env->GetMethodID(v_class, "setValue", "(D)V");
+		env->CallVoidMethod(v_class, setValue, result);
+		return true;
+	}
+
+	return false;
+}
+
+/*
+ * Class:     jtesseract_JTesseract
+ * Method:    getStringVariable
+ * Signature: (Ljava/lang/String;)Ljava/lang/String;
+ */
+JNIEXPORT jstring JNICALL Java_jtesseract_JTesseract_getStringVariable(JNIEnv *env, jobject obj, jstring name)
+{
+	const char *res = ocr->GetStringVariable(env->GetStringUTFChars(name, 0));
+	return env->NewStringUTF(res);
+}
+
+/*
+ * Class:     jtesseract_JTesseract
+ * Method:    printVariables
+ * Signature: (Ljava/lang/String;)V
+ */
+JNIEXPORT void JNICALL Java_jtesseract_JTesseract_printVariables(JNIEnv *env, jobject obj, jstring filename)
+{
+	FILE* fp;
+	fp = fopen(env->GetStringUTFChars(filename, 0), "w");
+	ocr->PrintVariables(fp);
+	fclose(fp);
+}
+
+/*
+ * Class:     jtesseract_JTesseract
+ * Method:    getVariableAsString
+ * Signature: (Ljava/lang/String;Ljava/lang/String;)Z
+ */
+JNIEXPORT jboolean JNICALL Java_jtesseract_JTesseract_getVariableAsString(JNIEnv *env, jobject obj, jstring name, jstring value)
+{
+	if(ocr->GetVariableAsString(env->GetStringUTFChars(name, 0), env->GetStringUTFChars(value, 0)))
+	return false;
+}
+

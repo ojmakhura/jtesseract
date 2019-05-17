@@ -69,7 +69,119 @@ JNIEXPORT jstring JNICALL Java_jtesseract_JTesseract_Version
  * Signature: ([BIII)V
  */
 JNIEXPORT void JNICALL Java_jtesseract_JTesseract_setFromBufferedImage
-  (JNIEnv *env, jobject obj, jbyteArray data, jint rows, jint cols, jint channels);
+  (JNIEnv *, jobject, jbyteArray, jint, jint, jint);
+
+/*
+ * Class:     jtesseract_JTesseract
+ * Method:    catchSignals
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_jtesseract_JTesseract_catchSignals
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     jtesseract_JTesseract
+ * Method:    setInputName
+ * Signature: (Ljava/lang/String;)V
+ */
+JNIEXPORT void JNICALL Java_jtesseract_JTesseract_setInputName
+  (JNIEnv *, jobject, jstring);
+
+/*
+ * Class:     jtesseract_JTesseract
+ * Method:    getInputName
+ * Signature: ()Ljava/lang/String;
+ */
+JNIEXPORT jstring JNICALL Java_jtesseract_JTesseract_getInputName
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     jtesseract_JTesseract
+ * Method:    getSourceYResolution
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_jtesseract_JTesseract_getSourceYResolution
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     jtesseract_JTesseract
+ * Method:    sgetDatapath
+ * Signature: ()Ljava/lang/String;
+ */
+JNIEXPORT jstring JNICALL Java_jtesseract_JTesseract_getDatapath
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     jtesseract_JTesseract
+ * Method:    setOutputName
+ * Signature: (Ljava/lang/String;)V
+ */
+JNIEXPORT void JNICALL Java_jtesseract_JTesseract_setOutputName
+  (JNIEnv *, jobject, jstring);
+
+/*
+ * Class:     jtesseract_JTesseract
+ * Method:    setVariable
+ * Signature: (Ljava/lang/String;Ljava/lang/String;)Z
+ */
+JNIEXPORT jboolean JNICALL Java_jtesseract_JTesseract_setVariable
+  (JNIEnv *, jobject, jstring, jstring);
+
+/*
+ * Class:     jtesseract_JTesseract
+ * Method:    setDebugVariable
+ * Signature: (Ljava/lang/String;Ljava/lang/String;)Z
+ */
+JNIEXPORT jboolean JNICALL Java_jtesseract_JTesseract_setDebugVariable
+  (JNIEnv *, jobject, jstring, jstring);
+
+/*
+ * Class:     jtesseract_JTesseract
+ * Method:    getIntVariable
+ * Signature: (Ljava/lang/String;Ljava/lang/Integer;)Z
+ */
+JNIEXPORT jboolean JNICALL Java_jtesseract_JTesseract_getIntVariable
+  (JNIEnv *, jobject, jstring, jobject);
+
+/*
+ * Class:     jtesseract_JTesseract
+ * Method:    getBoolVariable
+ * Signature: (Ljava/lang/String;Ljava/lang/Boolean;)Z
+ */
+JNIEXPORT jboolean JNICALL Java_jtesseract_JTesseract_getBoolVariable
+  (JNIEnv *, jobject, jstring, jobject);
+
+/*
+ * Class:     jtesseract_JTesseract
+ * Method:    getDoubleVariable
+ * Signature: (Ljava/lang/String;Ljava/lang/Double;)Z
+ */
+JNIEXPORT jboolean JNICALL Java_jtesseract_JTesseract_getDoubleVariable
+  (JNIEnv *, jobject, jstring, jobject);
+
+/*
+ * Class:     jtesseract_JTesseract
+ * Method:    getStringVariable
+ * Signature: (Ljava/lang/String;)Ljava/lang/String;
+ */
+JNIEXPORT jstring JNICALL Java_jtesseract_JTesseract_getStringVariable
+  (JNIEnv *, jobject, jstring);
+
+/*
+ * Class:     jtesseract_JTesseract
+ * Method:    printVariables
+ * Signature: (Ljava/lang/String;)V
+ */
+JNIEXPORT void JNICALL Java_jtesseract_JTesseract_printVariables
+  (JNIEnv *, jobject, jstring);
+
+/*
+ * Class:     jtesseract_JTesseract
+ * Method:    getVariableAsString
+ * Signature: (Ljava/lang/String;Ljava/lang/String;)Z
+ */
+JNIEXPORT jboolean JNICALL Java_jtesseract_JTesseract_getVariableAsString
+  (JNIEnv *, jobject, jstring, jstring);
 
 #ifdef __cplusplus
 }
