@@ -378,7 +378,12 @@ JNIEXPORT void JNICALL Java_jtesseract_JTesseract_printVariables(JNIEnv *env, jo
  */
 JNIEXPORT jboolean JNICALL Java_jtesseract_JTesseract_getVariableAsString(JNIEnv *env, jobject obj, jstring name, jstring value)
 {
-	if(ocr->GetVariableAsString(env->GetStringUTFChars(name, 0), env->GetStringUTFChars(value, 0)))
+	/*STRING str;
+	if(ocr->GetVariableAsString(env->GetStringUTFChars(name, 0), str))
+	{
+		value = env->NewStringUTF(str.string());
+		return true;
+	}*/
 	return false;
 }
 
