@@ -64,19 +64,19 @@ JNIEXPORT void JNICALL Java_jtesseract_JTessBaseAPI_initialise(JNIEnv *env, jobj
 	
 	if(engine == 0)
 	{
-		params.engine = OEM_TESSERACT_ONLY;
+		params.engine = OcrEngineMode::OEM_TESSERACT_ONLY;
 	} else if(engine == 1)
 	{
-		params.engine = OEM_LSTM_ONLY;
+		params.engine = OcrEngineMode::OEM_LSTM_ONLY;
 	} else if(engine == 2)
 	{
-		params.engine = OEM_TESSERACT_LSTM_COMBINED;
+		params.engine = OcrEngineMode::OEM_TESSERACT_LSTM_COMBINED;
 	} else if(engine == 3)
 	{
-		params.engine = OEM_DEFAULT;
+		params.engine = OcrEngineMode::OEM_DEFAULT;
 	} else if(engine == 4)
 	{
-		params.engine = OEM_COUNT;
+		params.engine = OcrEngineMode::OEM_COUNT;
 	} 
 	
 	ocr->Init(params.datapath.size() > 0 ? params.datapath.c_str() : NULL, params.lang.c_str(), params.engine);
@@ -805,4 +805,30 @@ JNIEXPORT jint JNICALL Java_jtesseract_JTessBaseAPI_numDawgs(JNIEnv *env, jobjec
 JNIEXPORT void JNICALL Java_jtesseract_JTessBaseAPI_setMinOrientationMargin(JNIEnv *env, jobject obj, jdouble margin)
 {
 	ocr->set_min_orientation_margin(margin);
+}
+
+/*
+ * Class:     jtesseract_JTessBaseAPI
+ * Method:    oem
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_jtesseract_JTessBaseAPI_oem(JNIEnv *env, jobject obj)
+{
+	OcrEngineMode mode = ocr->oem();
+	if(mode == OcrEngineMode::OEM_TESSERACT_ONLY)
+	{
+		return 0;
+	} else if(mode == OcrEngineMode::OEM_LSTM_ONLY)
+	{
+		return 1;
+	} else if(mode == OcrEngineMode::OEM_TESSERACT_LSTM_COMBINED)
+	{
+		return 2;
+	} else if(mode == OcrEngineMode::OEM_DEFAULT)
+	{
+		return 3;
+	} else
+	{
+		return 4;
+	} 
 }

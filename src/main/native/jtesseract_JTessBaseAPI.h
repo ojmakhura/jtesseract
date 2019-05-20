@@ -281,7 +281,7 @@ JNIEXPORT void JNICALL Java_jtesseract_JTessBaseAPI_setRectangle
 
 /*
  * Class:     jtesseract_JTessBaseAPI
- * Method:    GetRegions
+ * Method:    getRegions
  * Signature: ()Ljava/util/ArrayList;
  */
 JNIEXPORT jobject JNICALL Java_jtesseract_JTessBaseAPI_getRegions
@@ -421,6 +421,14 @@ JNIEXPORT jstring JNICALL Java_jtesseract_JTessBaseAPI_getUnichar
  * Signature: ()I
  */
 JNIEXPORT jint JNICALL Java_jtesseract_JTessBaseAPI_numDawgs
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     jtesseract_JTessBaseAPI
+ * Method:    oem
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_jtesseract_JTessBaseAPI_oem
   (JNIEnv *, jobject);
 
 /*

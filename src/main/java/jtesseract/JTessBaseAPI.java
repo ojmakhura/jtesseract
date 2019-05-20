@@ -323,7 +323,7 @@ public class JTessBaseAPI {
 	 * Caller takes ownership of the Pix and must pixDestroy it.
 	 * May be called any time after SetImage, or after TesseractRect.
 	 */
-	//public native Pix* getThresholdedImage();
+	//public native BufferedImage getThresholdedImage();
 
 	/**
 	 * Get the result of page layout analysis as Box objects
@@ -342,13 +342,13 @@ public class JTessBaseAPI {
 	 * If paraids is not nullptr, the paragraph-id of each line within its block is
 	 * also returned as an array of one element per line. delete [] after use.
 	 */
-	//public native Boxa* GetTextlines(const bool raw_image, const int raw_padding, Pixa** pixa, int** blockids, int** paraids);
+	//public native Boxa* getTextlines(const bool raw_image, const int raw_padding, Pixa** pixa, int** blockids, int** paraids);
 	
 	/*
 		Helper method to extract from the thresholded image. (most common usage)
 	*/
-	/*Boxa* GetTextlines(Pixa** pixa, int** blockids) {
-		return GetTextlines(false, 0, pixa, blockids, nullptr);
+	/*Boxa* getTextlines(Pixa** pixa, int** blockids) {
+		return getTextlines(false, 0, pixa, blockids, nullptr);
 	}*/
 
 	/**
@@ -359,7 +359,7 @@ public class JTessBaseAPI {
 	 * If blockids is not nullptr, the block-id of each line is also returned as an
 	 * array of one element per line. delete [] after use.
 	 */
-	//public native Boxa* GetStrips(Pixa** pixa, int** blockids);
+	//public native Boxa* getStrips(Pixa** pixa, int** blockids);
 
 	/**
 	 * Get the words as a leptonica-style
@@ -376,7 +376,7 @@ public class JTessBaseAPI {
 	 * Note: the caller is responsible for calling boxaDestroy()
 	 * on the returned Boxa array and pixaDestroy() on cc array.
 	 */
-	//public native Boxa* GetConnectedComponents(Pixa** cc);
+	//public native Boxa* getConnectedComponents(Pixa** cc);
 
 	/**
 	 * Get the given level kind of components (block, textline, word etc.) as a
@@ -391,16 +391,16 @@ public class JTessBaseAPI {
 	 * instead of the thresholded image and padded with raw_padding.
 	 * If text_only is true, then only text components are returned.
 	 */
-	/*public native Boxa* GetComponentImages(const PageIteratorLevel level,
+	/*public native Boxa* getComponentImages(const PageIteratorLevel level,
 							const bool text_only, const bool raw_image,
 							const int raw_padding,
 							Pixa** pixa, int** blockids, int** paraids);
 	*/	
 	// Helper function to get binary images with no padding (most common usage).
-	/*Boxa* GetComponentImages(const PageIteratorLevel level,
+	/*Boxa* getComponentImages(const PageIteratorLevel level,
 							const bool text_only,
 							Pixa** pixa, int** blockids) {
-		return GetComponentImages(level, text_only, false, 0, pixa, blockids, nullptr);
+		return getComponentImages(level, text_only, false, 0, pixa, blockids, nullptr);
 	}*/
 
 	/**
@@ -428,8 +428,8 @@ public class JTessBaseAPI {
 	 * has not been subjected to a call of Init, SetImage, Recognize, Clear, End
 	 * DetectOS, or anything else that changes the internal PAGE_RES.
 	 */
-	//public native PageIterator* AnalyseLayout();
-	//public native PageIterator* AnalyseLayout(bool merge_similar_words);
+	//public native PageIterator* analyseLayout();
+	//public native PageIterator* analyseLayout(bool merge_similar_words);
 
 	/**
 	 * Recognize the image from SetAndThresholdImage, generating Tesseract
@@ -437,7 +437,7 @@ public class JTessBaseAPI {
 	 * Optional. The Get*Text functions below will call Recognize if needed.
 	 * After Recognize, the output is kept internally until the next SetImage.
 	 */
-	//public native int Recognize(ETEXT_DESC* monitor);
+	//public native int recognize(ETEXT_DESC* monitor);
 
 	/**
 	 * Turns images into symbolic text.
@@ -487,7 +487,7 @@ public class JTessBaseAPI {
 	 * has not been subjected to a call of Init, SetImage, Recognize, Clear, End
 	 * DetectOS, or anything else that changes the internal PAGE_RES.
 	 */
-	//public native ResultIterator* GetIterator();
+	//public native ResultIterator* getIterator();
 
 	/**
 	 * Get a mutable iterator to the results of LayoutAnalysis and/or Recognize.
@@ -497,7 +497,7 @@ public class JTessBaseAPI {
 	 * has not been subjected to a call of Init, SetImage, Recognize, Clear, End
 	 * DetectOS, or anything else that changes the internal PAGE_RES.
 	 */
-	//public native MutableIterator* GetMutableIterator();
+	//public native MutableIterator* getMutableIterator();
 
 	/**
 	 * Make a HTML-formatted string with hOCR markup from the internal
@@ -508,7 +508,7 @@ public class JTessBaseAPI {
 	 *  receive progress callbacks
 	 * Returned string must be freed with the delete [] operator.
 	 */
-	//public native char* GetHOCRText(ETEXT_DESC* monitor, int page_number);
+	//public native char* getHOCRText(ETEXT_DESC* monitor, int page_number);
 
 	/**
 	 * Make a HTML-formatted string with hOCR markup from the internal
@@ -516,7 +516,7 @@ public class JTessBaseAPI {
 	 * page_number is 0-based but will appear in the output as 1-based.
 	 * Returned string must be freed with the delete [] operator.
 	 */
-	//public native char* GetHOCRText(int page_number);
+	//public native char* getHOCRText(int page_number);
 
 	/**
 	 * Make a TSV-formatted string from the internal data structures.
@@ -651,7 +651,7 @@ public class JTessBaseAPI {
 	/** Sets Dict::probability_in_context_ function to point to the given
 	 * function.
 	 */
-	//void SetProbabilityInContextFunc(ProbabilityInContextFunc f);
+	//void setProbabilityInContextFunc(ProbabilityInContextFunc f);
 
 	/**
 	 * Estimates the Orientation And Script of the image.
@@ -682,32 +682,32 @@ public class JTessBaseAPI {
 	//public native static void deleteBlockList(BLOCK_LIST* block_list);
 
 	/** Returns a ROW object created from the input row specification. */
-	//public native static ROW *MakeTessOCRRow(float baseline, float xheight, float descender, float ascender);
+	//public native static ROW *makeTessOCRRow(float baseline, float xheight, float descender, float ascender);
 
 	/** Returns a TBLOB corresponding to the entire input image. */
-	//public native static TBLOB *MakeTBLOB(Pix *pix);
+	//public native static TBLOB *makeTBLOB(Pix *pix);
 
 	/**
 	 * This method baseline normalizes a TBLOB in-place. The input row is used
 	 * for normalization. The denorm is an optional parameter in which the
 	 * normalization-antidote is returned.
 	 */
-	//public native static void NormalizeTBLOB(TBLOB *tblob, ROW *row, bool numeric_mode);
+	//public native static void normalizeTBLOB(TBLOB *tblob, ROW *row, bool numeric_mode);
 
 	/** This method returns the features associated with the input image. */
-	//public native void GetFeaturesForBlob(TBLOB* blob, INT_FEATURE_STRUCT* int_features, int* num_features, int* feature_outline_index);
+	//public native void getFeaturesForBlob(TBLOB* blob, INT_FEATURE_STRUCT* int_features, int* num_features, int* feature_outline_index);
 
 	/**
 	 * This method returns the row to which a box of specified dimensions would
 	 * belong. If no good match is found, it returns nullptr.
 	 */
-	//public native static ROW* FindRowForBox(BLOCK_LIST* blocks, int left, int top, int right, int bottom);
+	//public native static ROW* findRowForBox(BLOCK_LIST* blocks, int left, int top, int right, int bottom);
 
 	/**
 	 * Method to run adaptive classifier on a blob.
 	 * It returns at max num_max_matches results.
 	 */
-	//public native void RunAdaptiveClassifier(TBLOB* blob, int num_max_matches, int* unichar_ids, float* ratings, int* num_matches_returned);
+	//public native void runAdaptiveClassifier(TBLOB* blob, int num_max_matches, int* unichar_ids, float* ratings, int* num_matches_returned);
 
 	/** This method returns the string form of the specified unichar. 
 	 * 
@@ -727,9 +727,9 @@ public class JTessBaseAPI {
 
 	//public native Tesseract* tesseract() const { return tesseract_; }
 
-	//public native OcrEngineMode oem() const { return last_oem_requested_; }
+	public native int oem();
 
-	//public native void InitTruthCallback(TruthCallback *cb) { truth_cb_ = cb; }
+	//public native void initTruthCallback(TruthCallback *cb) { truth_cb_ = cb; }
 	
 	/**
 	 * 
