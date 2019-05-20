@@ -179,17 +179,16 @@ JNIEXPORT void JNICALL Java_jtesseract_JTessBaseAPI_create(JNIEnv *env, jobject 
 }
 
 /*
- * Class:     jtesseract_JTesseract
- * Method:    setFromBufferedImage
- * Signature: (Ljava/awt/image/BufferedImage;)V
+ * Class:     jtesseract_JTessBaseAPI
+ * Method:    setImageHelper
+ * Signature: ([BIII)V
  */
-JNIEXPORT void JNICALL Java_jtesseract_JTessBaseAPI_setFromBufferedImage
+JNIEXPORT void JNICALL Java_jtesseract_JTessBaseAPI_setImageHelper
 		(JNIEnv *env, jobject obj, jbyteArray data, jint rows, jint cols, jint channels)
 {
 	jbyte *dt = env->GetByteArrayElements(data, 0);	
 	params.image = 	Mat (rows, cols, CV_8UC3, (uchar *)dt);
 	ocr->SetImage(params.image.data, params.image.cols, params.image.rows, 3, params.image.step);
-	
 }
 
 /*
@@ -561,6 +560,50 @@ JNIEXPORT void JNICALL Java_jtesseract_JTessBaseAPI_setSourceResolution(JNIEnv *
 JNIEXPORT void JNICALL Java_jtesseract_JTessBaseAPI_setRectangle(JNIEnv *env, jobject obj, jint left, jint top, jint width, jint height)
 {
 	ocr->SetRectangle(left, top, width, height);
+}
+
+/*
+ * Class:     jtesseract_JTessBaseAPI
+ * Method:    GetRegions
+ * Signature: ()[Ljtesseract/Box;
+ */
+JNIEXPORT jobject JNICALL Java_jtesseract_JTessBaseAPI_getRegions(JNIEnv *env, jobject obj)
+{
+	Pixa *pxs;
+	Boxa *boxes = ocr->GetRegions(&pxs);
+
+	jclass lst_class = env->FindClass("java/util/ArrayList");
+	jmethodID bxs_init = env->GetMethodID(lst_class, "<init>", "()V");
+
+	if(bxs_init == NULL)
+	{
+		return NULL;
+	}
+
+	jobject list = env->NewObject(lst_class, bxs_init);
+	if(list == NULL)
+	{
+		return NULL;
+	}
+
+	jmethodID push_back = env->GetMethodID(lst_class, "push_back", "(Ljava/lang/Object)V");
+	if(push_back == NULL)
+	{
+		return NULL;
+	}
+
+	for(int i = 0; i < boxes->n; i++)
+	{
+		Box *bx = boxes->box[i];
+
+		jclass bxs_class = env->FindClass("jtesseract/Box");
+		jmethodID bxs_init = env->GetMethodID(bxs_class, "<init>", "(IIII)V");
+		jobject box = env->NewObject(bxs_class, bxs_init, bx->x, bx->y, bx->w, bx->h);
+
+		env->CallVoidMethod(list, push_back, box);
+	}
+
+	return list;
 }
 
 /*

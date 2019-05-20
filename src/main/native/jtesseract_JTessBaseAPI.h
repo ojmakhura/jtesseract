@@ -65,10 +65,10 @@ JNIEXPORT jstring JNICALL Java_jtesseract_JTessBaseAPI_Version
 
 /*
  * Class:     jtesseract_JTessBaseAPI
- * Method:    setFromBufferedImage
+ * Method:    setImageHelper
  * Signature: ([BIII)V
  */
-JNIEXPORT void JNICALL Java_jtesseract_JTessBaseAPI_setFromBufferedImage
+JNIEXPORT void JNICALL Java_jtesseract_JTessBaseAPI_setImageHelper
   (JNIEnv *, jobject, jbyteArray, jint, jint, jint);
 
 /*
@@ -250,7 +250,7 @@ JNIEXPORT jint JNICALL Java_jtesseract_JTessBaseAPI_getPageSegMode
 /*
  * Class:     jtesseract_JTessBaseAPI
  * Method:    tesseractRect
- * Signature: (Ljava/lang/String;IIIIII)Ljava/lang/String;
+ * Signature: ([BIIIIII)Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL Java_jtesseract_JTessBaseAPI_tesseractRect
   (JNIEnv *, jobject, jbyteArray, jint, jint, jint, jint, jint, jint);
@@ -278,6 +278,14 @@ JNIEXPORT void JNICALL Java_jtesseract_JTessBaseAPI_setSourceResolution
  */
 JNIEXPORT void JNICALL Java_jtesseract_JTessBaseAPI_setRectangle
   (JNIEnv *, jobject, jint, jint, jint, jint);
+
+/*
+ * Class:     jtesseract_JTessBaseAPI
+ * Method:    GetRegions
+ * Signature: ()Ljava/util/ArrayList;
+ */
+JNIEXPORT jobject JNICALL Java_jtesseract_JTessBaseAPI_getRegions
+  (JNIEnv *, jobject);
 
 /*
  * Class:     jtesseract_JTessBaseAPI
@@ -313,8 +321,8 @@ JNIEXPORT jstring JNICALL Java_jtesseract_JTessBaseAPI_getUNLVText
 
 /*
  * Class:     jtesseract_JTessBaseAPI
- * Method:    fetectOrientationScript
- * Signature: ([I[F[Ljava/lang/String;[F)Z
+ * Method:    detectOrientationScript
+ * Signature: ([I[FLjava/lang/String;[F)Z
  */
 JNIEXPORT jboolean JNICALL Java_jtesseract_JTessBaseAPI_detectOrientationScript
   (JNIEnv *, jobject, jintArray, jfloatArray, jstring, jfloatArray);
@@ -337,7 +345,7 @@ JNIEXPORT jint JNICALL Java_jtesseract_JTessBaseAPI_meanTextConf
 
 /*
  * Class:     jtesseract_JTessBaseAPI
- * Method:    AllWordConfidences
+ * Method:    allWordConfidences
  * Signature: ()[I
  */
 JNIEXPORT jintArray JNICALL Java_jtesseract_JTessBaseAPI_allWordConfidences
@@ -370,18 +378,18 @@ JNIEXPORT void JNICALL Java_jtesseract_JTessBaseAPI_clearPersistentCache
 /*
  * Class:     jtesseract_JTessBaseAPI
  * Method:    isValidWord
- * Signature: (Ljava/lang/String;)I
+ * Signature: (Ljava/lang/String;)Z
  */
 JNIEXPORT jboolean JNICALL Java_jtesseract_JTessBaseAPI_isValidWord
   (JNIEnv *, jobject, jstring);
 
 /*
  * Class:     jtesseract_JTessBaseAPI
- * Method:    IsValidCharacter
- * Signature: (Ljava/lang/String;)Z
+ * Method:    isValidCharacter
+ * Signature: (C)Z
  */
 JNIEXPORT jboolean JNICALL Java_jtesseract_JTessBaseAPI_isValidCharacter
-  (JNIEnv *, jobject, jbyte);
+  (JNIEnv *, jobject, jchar);
 
 /*
  * Class:     jtesseract_JTessBaseAPI
@@ -404,7 +412,7 @@ JNIEXPORT void JNICALL Java_jtesseract_JTessBaseAPI_getBlockTextOrientations
  * Method:    getUnichar
  * Signature: (I)Ljava/lang/String;
  */
-JNIEXPORT jstring JNICALL Java_jtesseract_JTessBaseAPI_getUniChar
+JNIEXPORT jstring JNICALL Java_jtesseract_JTessBaseAPI_getUnichar
   (JNIEnv *, jobject, jint);
 
 /*

@@ -62,7 +62,22 @@ public class JTessBaseAPI {
 	 * @param cols
 	 * @param channels
 	 */
-	public native void setFromBufferedImage(byte[] data, int rows, int cols, int channels);
+	private native void setImageHelper(byte[] data, int rows, int cols, int channels);
+
+	/**
+	 * Set the tesseract image from a BufferedImage object. This method essentially uses
+	 * the setImageHelper(byte[] data, int rows, int cols, int channels); above to call
+	 * the proper C/C++ implementation from the tesseract library.
+	 * 
+	 * @param image
+	 */
+	public void setImage(BufferedImage image)
+	{
+		int rows = image.getHeight();
+	    int cols = image.getWidth();
+	    int channels = image.getColorModel().getColorSpace().getNumComponents();		
+	    this.setImageHelper(this.getImageByteData(image), rows, cols, channels);
+	}
 
 	/**
 	 * Writes the thresholded image to stderr as a PBM file on receipt of a SIGSEGV,
@@ -258,9 +273,15 @@ public class JTessBaseAPI {
 	 * @param height
 	 * @return
 	 */
-	public native String tesseractRect(byte[] imagedata,
+	private native String tesseractRect(byte[] imagedata,
 						int bytes_per_pixel, int bytes_per_line,
 						int left, int top, int width, int height);
+
+	public String tesseractRect(BufferedImage image, int bytes_per_line, Box box)
+	{
+		int channels = image.getColorModel().getColorSpace().getNumComponents();
+		return tesseractRect(this.getImageByteData(image), channels, bytes_per_line, box.getY(), box.getY(), box.getWidth(), box.getHeight());
+	}
 
 	/**
 	 * Call between pages or documents etc to free up memory and forget
@@ -305,11 +326,10 @@ public class JTessBaseAPI {
 	//public native Pix* getThresholdedImage();
 
 	/**
-	 * Get the result of page layout analysis as a leptonica-style
-	 * Boxa, Pixa pair, in reading order.
+	 * Get the result of page layout analysis as Box objects
 	 * Can be called before or after Recognize.
 	 */
-	//public native Boxa* GetRegions(Pixa** pixa);
+	public native ArrayList<Box> getRegions();
 
 	/**
 	 * Get the textlines as a leptonica-style
